@@ -1,1 +1,1 @@
-# Pokedex REPL CLI
+# Pokédex REPL CLI
