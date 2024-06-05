@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/ahgr3y/pokedex-repl-cli/pokeapi"
 )
 
 var cliName = "Pokedex"
@@ -27,6 +29,11 @@ func getCommands() map[string]cliCommand {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+		},
+		"map": {
+			name:        "map",
+			description: "Displays a page of 20 map locations",
+			callback:    pokeapi.CommandMap,
 		},
 	}
 }
