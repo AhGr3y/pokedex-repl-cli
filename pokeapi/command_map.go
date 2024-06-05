@@ -1,5 +1,5 @@
 package pokeapi
 
-func CommandMap() error {
+func CommandMapf() error {
 	return nil
 }

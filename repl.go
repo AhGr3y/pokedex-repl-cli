@@ -33,7 +33,7 @@ func getCommands() map[string]cliCommand {
 		"map": {
 			name:        "map",
 			description: "Displays a page of 20 map locations",
-			callback:    pokeapi.CommandMap,
+			callback:    pokeapi.CommandMapf,
 		},
 	}
 }
