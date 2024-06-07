@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ahgr3y/pokedex-repl-cli/pokeapi"
+	"github.com/ahgr3y/pokedex-repl-cli/internal/pokeapi"
 )
 
 var cliName = "Pokedex"
@@ -14,7 +14,13 @@ var cliName = "Pokedex"
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
+}
+
+type config struct {
+	pokeapiClient   pokeapi.Client
+	nextLocationURL *string
+	prevLocationURL *string
 }
 
 // Used for mapping commands
@@ -32,8 +38,13 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "Displays a page of 20 map locations",
-			callback:    pokeapi.CommandMapf,
+			description: "Displays the next page of location areas",
+			callback:    commandMapf,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the previous page of location areas",
+			callback:    commandMapb,
 		},
 	}
 }
@@ -46,7 +57,7 @@ func cleanInput(input string) []string {
 }
 
 // Start the Pokedex
-func startRepl() {
+func startRepl(cfg *config) {
 	// Display welcome message to get user started
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Enter 'help' to get the list of available commands.")
@@ -68,7 +79,7 @@ func startRepl() {
 		command, exist := getCommands()[commandName]
 
 		if exist {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 				continue
