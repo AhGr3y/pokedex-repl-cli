@@ -14,7 +14,7 @@ var cliName = "Pokedex"
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 type config struct {
@@ -46,6 +46,11 @@ func getCommands() map[string]cliCommand {
 			description: "Displays the previous page of location areas",
 			callback:    commandMapb,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Displays a list of pokemon encountered in the specified location area",
+			callback:    commandExplore,
+		},
 	}
 }
 
@@ -58,6 +63,7 @@ func cleanInput(input string) []string {
 
 // Start the Pokedex
 func startRepl(cfg *config) {
+
 	// Display welcome message to get user started
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Enter 'help' to get the list of available commands.")
@@ -79,7 +85,14 @@ func startRepl(cfg *config) {
 		command, exist := getCommands()[commandName]
 
 		if exist {
-			err := command.callback(cfg)
+			if len(commands) > 1 { // Commands with arguments
+				err := command.callback(cfg, commands[1])
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+			}
+			err := command.callback(cfg) // Commands without arguments
 			if err != nil {
 				fmt.Println(err)
 				continue

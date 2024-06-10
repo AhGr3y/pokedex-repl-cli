@@ -12,6 +12,17 @@ func (pokeapiClient *Client) ListLocations(resourceUrl *string) (location, error
 		url = *resourceUrl
 	}
 
+	// If url exist in cache, use data in cache
+	if dat, exist := pokeapiClient.cache.Get(url); exist {
+		// Parse dat to location struct
+		loc := location{}
+		err := json.Unmarshal(dat, &loc)
+		if err != nil {
+			return location{}, err
+		}
+		return loc, nil
+	}
+
 	// Retrieve data from url
 	resp, err := pokeapiClient.httpClient.Get(url)
 	if err != nil {
@@ -26,12 +37,15 @@ func (pokeapiClient *Client) ListLocations(resourceUrl *string) (location, error
 	}
 
 	// Parse dat to location struct
-	locationType := location{}
-	err = json.Unmarshal(dat, &locationType)
+	loc := location{}
+	err = json.Unmarshal(dat, &loc)
 	if err != nil {
 		return location{}, err
 	}
 
-	return locationType, nil
+	// Save loc in cache
+	pokeapiClient.cache.Add(url, dat)
+
+	return loc, nil
 
 }

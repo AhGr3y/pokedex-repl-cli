@@ -8,7 +8,7 @@ import (
 var isLastPage = false
 var isFirstPage = true
 
-func commandMapf(cfg *config) error {
+func commandMapf(cfg *config, args ...string) error {
 
 	// Print error message if user reaches last page
 	if isLastPage {
@@ -44,7 +44,7 @@ func commandMapf(cfg *config) error {
 	return nil
 }
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, args ...string) error {
 
 	// Print error message if user reaches first page
 	if isFirstPage {

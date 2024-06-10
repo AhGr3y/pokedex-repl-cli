@@ -9,7 +9,7 @@ import (
 func main() {
 
 	cfg := &config{
-		pokeapiClient: pokeapi.GetClient(time.Second * 10),
+		pokeapiClient: pokeapi.GetClient(time.Second*10, time.Minute*5),
 	}
 
 	startRepl(cfg)
