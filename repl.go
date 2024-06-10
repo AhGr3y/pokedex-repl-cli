@@ -47,7 +47,7 @@ func getCommands() map[string]cliCommand {
 			callback:    commandMapb,
 		},
 		"explore": {
-			name:        "explore",
+			name:        "explore <location_area>",
 			description: "Displays a list of pokemon encountered in the specified location area",
 			callback:    commandExplore,
 		},
@@ -81,22 +81,21 @@ func startRepl(cfg *config) {
 			continue
 		}
 
+		args := []string{}
+		if len(commands) > 1 {
+			args = commands[1:]
+		}
 		commandName := commands[0]
 		command, exist := getCommands()[commandName]
 
 		if exist {
-			if len(commands) > 1 { // Commands with arguments
-				err := command.callback(cfg, commands[1])
-				if err != nil {
-					fmt.Println(err)
-					continue
-				}
-			}
-			err := command.callback(cfg) // Commands without arguments
+
+			err := command.callback(cfg, args...)
 			if err != nil {
 				fmt.Println(err)
 				continue
 			}
+
 		} else {
 			fmt.Println("Invalid command")
 			continue
