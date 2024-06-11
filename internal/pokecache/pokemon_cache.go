@@ -28,6 +28,22 @@ func (c *PokemonCache) Get(key string) (poketype.Pokemon, bool) {
 	return pokemon, ok
 }
 
+func (c *PokemonCache) Len() int {
+	return len(c.pokeCache)
+}
+
+func (c *PokemonCache) GetPokemonList() []string {
+	if c.Len() == 0 {
+		return []string{}
+	}
+
+	list := []string{}
+	for name := range c.pokeCache {
+		list = append(list, name)
+	}
+	return list
+}
+
 func NewPokeCache() *PokemonCache {
 	return &PokemonCache{
 		pokeCache: make(map[string]poketype.Pokemon),

@@ -32,5 +32,6 @@ func commandInspect(cfg *config, args ...string) error {
 	for _, t := range pokemonSpecs.Types {
 		fmt.Printf("    - %v\n", t.Type.Name)
 	}
+
 	return nil
 }

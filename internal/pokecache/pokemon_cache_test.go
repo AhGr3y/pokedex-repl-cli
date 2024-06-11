@@ -42,3 +42,27 @@ func TestPokeCacheAddGet(t *testing.T) {
 		})
 	}
 }
+
+func TestLen(t *testing.T) {
+	cache := NewPokeCache()
+	if cache.Len() != 0 {
+		t.Errorf("Expected length to be 0")
+	}
+	cache.Add("pikachu", poketype.Pokemon{})
+	if cache.Len() != 1 {
+		t.Errorf("Expected length to be 1")
+	}
+}
+
+func TestGetPokemonList(t *testing.T) {
+	cache := NewPokeCache()
+	cache.Add("pikachu", poketype.Pokemon{})
+	cache.Add("pidgey", poketype.Pokemon{})
+	list := cache.GetPokemonList()
+	if list[0] != "pikachu" {
+		t.Errorf("Expected to find pikachu")
+	}
+	if list[1] != "pidgey" {
+		t.Errorf("Expected to find pidgey")
+	}
+}

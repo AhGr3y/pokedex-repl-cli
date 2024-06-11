@@ -9,6 +9,10 @@ var isLastPage = false
 var isFirstPage = true
 
 func commandMapf(cfg *config, args ...string) error {
+	// This command should not have any arguments
+	if len(args) != 0 {
+		return errors.New("this command does not take any argument, run 'map' instead")
+	}
 
 	// Print error message if user reaches last page
 	if isLastPage {
@@ -45,6 +49,10 @@ func commandMapf(cfg *config, args ...string) error {
 }
 
 func commandMapb(cfg *config, args ...string) error {
+	// This command should not have any arguments
+	if len(args) != 0 {
+		return errors.New("this command does not take any argument, run 'mapb' instead")
+	}
 
 	// Print error message if user reaches first page
 	if isFirstPage {
