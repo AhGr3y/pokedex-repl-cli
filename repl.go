@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/ahgr3y/pokedex-repl-cli/internal/pokeapi"
+	"github.com/ahgr3y/pokedex-repl-cli/internal/pokecache"
 )
 
 var cliName = "Pokedex"
@@ -18,6 +19,7 @@ type cliCommand struct {
 }
 
 type config struct {
+	pokeCache       *pokecache.PokemonCache
 	pokeapiClient   pokeapi.Client
 	nextLocationURL *string
 	prevLocationURL *string
@@ -55,6 +57,11 @@ func getCommands() map[string]cliCommand {
 			name:        "catch <pokemon_name>",
 			description: "Attempt to catch a pokemon",
 			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect <pokemon_name>",
+			description: "Inspect a pokemon that has been caught",
+			callback:    commandInspect,
 		},
 	}
 }
