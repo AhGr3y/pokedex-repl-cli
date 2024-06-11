@@ -13,7 +13,6 @@ type cacheEntry struct {
 type Cache struct {
 	cacheMap map[string]cacheEntry
 	mu       *sync.Mutex
-	stop     chan struct{}
 }
 
 func (c *Cache) Add(key string, val []byte) {
@@ -66,7 +65,6 @@ func NewCache(interval time.Duration) *Cache {
 	cache := Cache{
 		cacheMap: map[string]cacheEntry{},
 		mu:       &sync.Mutex{},
-		stop:     make(chan struct{}),
 	}
 	go cache.reapLoop(interval)
 	return &cache

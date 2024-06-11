@@ -3,9 +3,11 @@ package pokeapi
 import (
 	"encoding/json"
 	"io"
+
+	"github.com/ahgr3y/pokedex-repl-cli/internal/poketype"
 )
 
-func (pokeapiClient *Client) ListLocations(resourceUrl *string) (location, error) {
+func (pokeapiClient *Client) ListLocations(resourceUrl *string) (poketype.Location, error) {
 
 	url := baseUrl + "/location-area"
 	if resourceUrl != nil {
@@ -15,10 +17,10 @@ func (pokeapiClient *Client) ListLocations(resourceUrl *string) (location, error
 	// If url exist in cache, use data in cache
 	if dat, exist := pokeapiClient.cache.Get(url); exist {
 		// Parse dat to location struct
-		loc := location{}
+		loc := poketype.Location{}
 		err := json.Unmarshal(dat, &loc)
 		if err != nil {
-			return location{}, err
+			return poketype.Location{}, err
 		}
 		return loc, nil
 	}
@@ -26,21 +28,21 @@ func (pokeapiClient *Client) ListLocations(resourceUrl *string) (location, error
 	// Retrieve data from url
 	resp, err := pokeapiClient.httpClient.Get(url)
 	if err != nil {
-		return location{}, err
+		return poketype.Location{}, err
 	}
 	defer resp.Body.Close()
 
 	// Get data from response
 	dat, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return location{}, err
+		return poketype.Location{}, err
 	}
 
 	// Parse dat to location struct
-	loc := location{}
+	loc := poketype.Location{}
 	err = json.Unmarshal(dat, &loc)
 	if err != nil {
-		return location{}, err
+		return poketype.Location{}, err
 	}
 
 	// Save loc in cache

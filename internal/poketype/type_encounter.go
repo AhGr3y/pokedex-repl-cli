@@ -1,6 +1,6 @@
-package pokeapi
+package poketype
 
-type encounter struct {
+type Encounter struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {
 			Name string `json:"name"`
